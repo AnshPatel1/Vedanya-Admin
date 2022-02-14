@@ -1,3 +1,5 @@
+import 'package:vedanya_admin/components/summary_bottom_sheet_widget.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -21,7 +23,29 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  Map<int, String> msosSerialized = {};
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<void> openSummarySheet(String data, String date, String booking) async {
+    await showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: SummaryBottomSheetWidget(
+              data: data,
+              date: date,
+              booking: booking,
+            ),
+          ),
+        );
+      },
+      context: context,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -262,8 +286,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     color: Color(0xFFF4BCBC),
                                                     size: 30,
                                                   ),
-                                                  onPressed: () {
-                                                    print('IconButton pressed ...');
+                                                  onPressed: () async {
+                                                    await openSummarySheet(
+                                                        getJsonField(
+                                                          (columnGetRecentSBLRsResponse?.jsonBody ?? ''),
+                                                          r'''$[-1].summary''',
+                                                        ).toString(),
+                                                        getJsonField(
+                                                          (columnGetRecentSBLRsResponse?.jsonBody ?? ''),
+                                                          r'''$[-1].date''',
+                                                        ).toString(),
+                                                        getJsonField(
+                                                          (columnGetRecentSBLRsResponse?.jsonBody ?? ''),
+                                                          r'''$[-1].total_booking''',
+                                                        ).toString());
                                                   },
                                                 ),
                                               ],
@@ -606,7 +642,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ),
                     ),
                     FutureBuilder<ApiCallResponse>(
-                      future: GetRecentSBLRsCall.call(),
+                      future: GetMSOSCall.call(),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
                         if (!snapshot.hasData) {
@@ -620,65 +656,62 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           );
                         }
-                        final containerGetRecentSBLRsResponse = snapshot.data;
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(),
-                          child: Builder(
-                            builder: (context) {
-                              var sblrs = (GetRecentSBLRsCall.reversed(
-                                        (containerGetRecentSBLRsResponse?.jsonBody ?? ''),
-                                      )?.toList() ??
-                                      [])
-                                  .take(6)
-                                  .toList();
-                              sblrs = new List.from(sblrs.reversed);
-                              return ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: sblrs.length,
-                                itemBuilder: (context, sblrsIndex) {
-                                  final sblrsItem = sblrs[sblrsIndex];
-                                  return Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * 0.92,
-                                          height: 70,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFF090F13),
-                                            borderRadius: BorderRadius.circular(8),
-                                            border: Border.all(
-                                              width: 0,
-                                            ),
-                                          ),
-                                          child: FutureBuilder<ApiCallResponse>(
-                                            future: GetMSObyIdCall.call(
-                                              id: getJsonField(
-                                                sblrsItem,
-                                                r'''$.mso''',
+                        final objectGetMSObyIdResponse = snapshot.data;
+                        for (dynamic i in objectGetMSObyIdResponse.jsonBody)
+                          msosSerialized[i['pk']] = i['name'];
+                        return FutureBuilder<ApiCallResponse>(
+                          future: GetRecentSBLRsCall.call(),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: FlutterFlowTheme.of(context).primaryColor,
+                                  ),
+                                ),
+                              );
+                            }
+                            final containerGetRecentSBLRsResponse = snapshot.data;
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(),
+                              child: Builder(
+                                builder: (context) {
+                                  var sblrs = (GetRecentSBLRsCall.reversed(
+                                            (containerGetRecentSBLRsResponse?.jsonBody ?? ''),
+                                          )?.toList() ??
+                                          [])
+                                      .take(6)
+                                      .toList();
+                                  sblrs = new List.from(sblrs.reversed);
+                                  return ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: sblrs.length,
+                                    itemBuilder: (context, sblrsIndex) {
+                                      final sblrsItem = sblrs[sblrsIndex];
+                                      return Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context).size.width * 0.92,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFF090F13),
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  width: 0,
+                                                ),
                                               ),
-                                            ),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 20,
-                                                    height: 20,
-                                                    child: CircularProgressIndicator(
-                                                      color: FlutterFlowTheme.of(context).primaryColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final rowGetMSObyIdResponse = snapshot.data;
-                                              return Row(
+                                              child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
                                                   Padding(
@@ -766,10 +799,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               padding:
                                                                   EdgeInsetsDirectional.fromSTEB(0, 4, 4, 0),
                                                               child: Text(
-                                                                getJsonField(
-                                                                  (rowGetMSObyIdResponse?.jsonBody ?? ''),
-                                                                  r'''$..name''',
-                                                                ).toString(),
+                                                                msosSerialized[getJsonField(
+                                                                  sblrsItem,
+                                                                  r'''$.mso''',
+                                                                )],
                                                                 textAlign: TextAlign.start,
                                                                 style: FlutterFlowTheme.of(context)
                                                                     .bodyText2
@@ -804,20 +837,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     ),
                                                   ),
                                                 ],
-                                              );
-                                            },
-                                          ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         );
                       },
-                    ),
+                    )
                   ],
                 ),
               ),

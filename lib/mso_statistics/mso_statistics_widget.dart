@@ -223,7 +223,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        'Activity',
+                                        'MSO Statistics',
                                         style: FlutterFlowTheme.of(context).title1.override(
                                               fontFamily: 'Lexend Deca',
                                               color: Color(0xFFDBDBDB),
