@@ -1,3 +1,5 @@
+import 'package:vedanya_admin/login/login_widget.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -39,7 +41,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
-            backgroundColor: Color(0xFF131313),
+            backgroundColor: Color(0xFF14181B),
             automaticallyImplyLeading: false,
             title: Text(
               'Profile',
@@ -54,7 +56,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             centerTitle: false,
             elevation: 0,
           ),
-          backgroundColor: Color(0xFF131313),
+          backgroundColor: Color(0xFF14181B),
           body: SafeArea(
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -69,8 +71,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(),
                         child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -86,25 +87,19 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 8, 0, 0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                                       child: Text(
                                         getJsonField(
-                                          (settingsLoginAuthResponse
-                                                  ?.jsonBody ??
-                                              ''),
+                                          (settingsLoginAuthResponse?.jsonBody ?? ''),
                                           r'''$.name''',
                                         ).toString(),
-                                        style: FlutterFlowTheme.of(context)
-                                            .title3
-                                            .override(
+                                        style: FlutterFlowTheme.of(context).title3.override(
                                               fontFamily: 'Montserrat',
                                               color: Color(0xFFEFEFEF),
                                               fontSize: 24,
@@ -113,18 +108,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 8, 0, 0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                                       child: Text(
                                         getJsonField(
-                                          (settingsLoginAuthResponse
-                                                  ?.jsonBody ??
-                                              ''),
+                                          (settingsLoginAuthResponse?.jsonBody ?? ''),
                                           r'''$.position''',
                                         ).toString(),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText2
-                                            .override(
+                                        style: FlutterFlowTheme.of(context).bodyText2.override(
                                               fontFamily: 'Montserrat',
                                               color: Color(0xFFA4A4A4),
                                               fontSize: 14,
@@ -148,13 +138,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
+                            padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
                             child: Text(
                               'Account Settings',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
+                              style: FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xDDFFFFFF),
                                     fontSize: 14,
@@ -190,23 +177,30 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
+                                onPressed: () async {
+                                  FFAppState().isLoggedIn = false;
+                                  FFAppState().username = '';
+                                  FFAppState().password = '';
+                                  await Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginWidget(),
+                                    ),
+                                    (r) => false,
+                                  );
                                 },
                                 text: 'Log Out',
                                 options: FFButtonOptions(
                                   width: 90,
                                   height: 40,
                                   color: Colors.transparent,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText2
-                                      .override(
+                                  textStyle: FlutterFlowTheme.of(context).bodyText2.override(
                                         fontFamily: 'Lexend Deca',
                                         color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.normal,
                                       ),
-                                  elevation: 1,
+                                  elevation: 0,
                                   borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1,
