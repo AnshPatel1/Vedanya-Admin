@@ -44,7 +44,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             title: Text(
               'Profile',
               style: FlutterFlowTheme.of(context).title2.override(
-                    fontFamily: 'Outfit',
+                    fontFamily: 'Montserrat',
                     color: Color(0xFFE0E0E0),
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -105,7 +105,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                         style: FlutterFlowTheme.of(context)
                                             .title3
                                             .override(
-                                              fontFamily: 'Outfit',
+                                              fontFamily: 'Montserrat',
                                               color: Color(0xFFEFEFEF),
                                               fontSize: 24,
                                               fontWeight: FontWeight.w500,
@@ -125,7 +125,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText2
                                             .override(
-                                              fontFamily: 'Outfit',
+                                              fontFamily: 'Montserrat',
                                               color: Color(0xFFA4A4A4),
                                               fontSize: 14,
                                               fontWeight: FontWeight.normal,
@@ -156,7 +156,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   .bodyText1
                                   .override(
                                     fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF090F13),
+                                    color: Color(0xDDFFFFFF),
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -197,7 +197,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 options: FFButtonOptions(
                                   width: 90,
                                   height: 40,
-                                  color: Color(0x00FFFFFF),
+                                  color: Colors.transparent,
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyText2
                                       .override(
@@ -211,7 +211,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     color: Colors.transparent,
                                     width: 1,
                                   ),
-                                  borderRadius: 60,
+                                  borderRadius: 12,
                                 ),
                               ),
                             ),

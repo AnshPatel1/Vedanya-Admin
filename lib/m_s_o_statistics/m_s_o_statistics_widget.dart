@@ -1,3 +1,5 @@
+import 'package:vedanya_admin/components/summary_bottom_sheet_widget.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
@@ -14,10 +16,12 @@ class MSOStatisticsWidget extends StatefulWidget {
   _MSOStatisticsWidgetState createState() => _MSOStatisticsWidgetState();
 }
 
-class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
-    with TickerProviderStateMixin {
+class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerProviderStateMixin {
   String choiceChipsValue;
   String dropDownValue;
+  Map<String, int> msosSerialized = {};
+  int msoStatId = 1;
+  String statisticValue = 'all_time';
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'textOnPageLoadAnimation1': AnimationInfo(
@@ -176,8 +180,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
   void initState() {
     super.initState();
     startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      animationsMap.values.where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
   }
@@ -212,16 +215,13 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
                                       'Activity',
-                                      style: FlutterFlowTheme.of(context)
-                                          .title1
-                                          .override(
+                                      style: FlutterFlowTheme.of(context).title1.override(
                                             fontFamily: 'Lexend Deca',
                                             color: Color(0xFFDBDBDB),
                                             fontSize: 28,
@@ -266,13 +266,10 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 8, 0, 12),
+                                padding: EdgeInsetsDirectional.fromSTEB(16, 8, 0, 12),
                                 child: Text(
                                   'This Month',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText2
-                                      .override(
+                                  style: FlutterFlowTheme.of(context).bodyText2.override(
                                         fontFamily: 'Lexend Deca',
                                         color: Color(0xFF8B97A2),
                                         fontSize: 14,
@@ -285,8 +282,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                           Container(
                             decoration: BoxDecoration(),
                             child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
                               child: FutureBuilder<ApiCallResponse>(
                                 future: GetMSOSCall.call(),
                                 builder: (context, snapshot) {
@@ -297,34 +293,24 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                         width: 20,
                                         height: 20,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          color: FlutterFlowTheme.of(context).primaryColor,
                                         ),
                                       ),
                                     );
                                   }
                                   final dropDownGetMSOSResponse = snapshot.data;
+                                  for (dynamic mso in dropDownGetMSOSResponse.jsonBody)
+                                    msosSerialized[mso['name']] = mso['pk'];
                                   return FlutterFlowDropDown(
-                                    initialOption: dropDownValue ??=
-                                        getJsonField(
-                                      (dropDownGetMSOSResponse?.jsonBody ?? ''),
-                                      r'''$[0].name''',
-                                    ).toString(),
-                                    options: getJsonField(
-                                      (dropDownGetMSOSResponse?.jsonBody ?? ''),
-                                      r'''$..name''',
-                                    )
-                                        .map<String>((s) => s.toString())
-                                        .toList()
-                                        .toList(),
-                                    onChanged: (val) =>
-                                        setState(() => dropDownValue = val),
-                                    width: MediaQuery.of(context).size.width *
-                                        0.96,
+                                    initialOption: msosSerialized.keys.first,
+                                    options: msosSerialized.keys.toList(),
+                                    onChanged: (val) => setState(() {
+                                      msoStatId = msosSerialized[val];
+                                      dropDownValue = val;
+                                    }),
+                                    width: MediaQuery.of(context).size.width * 0.96,
                                     height: 50,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
+                                    textStyle: FlutterFlowTheme.of(context).bodyText1.override(
                                           fontFamily: 'Poppins',
                                           color: Color(0xFFFFCFCF),
                                         ),
@@ -334,14 +320,12 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                       color: Color(0xFFFFCFCF),
                                       size: 15,
                                     ),
-                                    fillColor:
-                                        FlutterFlowTheme.of(context).alternate,
+                                    fillColor: FlutterFlowTheme.of(context).alternate,
                                     elevation: 2,
                                     borderColor: Colors.transparent,
                                     borderWidth: 0,
                                     borderRadius: 8,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        12, 4, 12, 4),
+                                    margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
                                     hidesUnderline: true,
                                   );
                                 },
@@ -351,26 +335,25 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                           Container(
                             decoration: BoxDecoration(),
                             child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                               child: FlutterFlowChoiceChips(
                                 initiallySelected: [choiceChipsValue],
                                 options: [
                                   ChipData('All time', Icons.timeline),
                                   ChipData('This year', Icons.threesixty),
-                                  ChipData(
-                                      'This month', Icons.calendar_view_day),
-                                  ChipData('This week',
-                                      Icons.calendar_view_day_outlined)
+                                  ChipData('This month', Icons.calendar_view_day),
+                                  ChipData('This week', Icons.calendar_view_day_outlined)
                                 ],
-                                onChanged: (val) => setState(
-                                    () => choiceChipsValue = val.first),
+                                onChanged: (val) => setState(() {
+                                  choiceChipsValue = val.first;
+                                  if (choiceChipsValue == 'All time') statisticValue = 'all_time';
+                                  if (choiceChipsValue == 'This year') statisticValue = 'current_year';
+                                  if (choiceChipsValue == 'This month') statisticValue = 'current_month';
+                                  if (choiceChipsValue == 'This week') statisticValue = 'current_week';
+                                }),
                                 selectedChipStyle: ChipStyle(
-                                  backgroundColor: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
+                                  backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
+                                  textStyle: FlutterFlowTheme.of(context).bodyText1.override(
                                         fontFamily: 'Poppins',
                                         color: Colors.white,
                                       ),
@@ -380,9 +363,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                 ),
                                 unselectedChipStyle: ChipStyle(
                                   backgroundColor: Colors.white,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText2
-                                      .override(
+                                  textStyle: FlutterFlowTheme.of(context).bodyText2.override(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF262D34),
                                       ),
@@ -399,13 +380,10 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 8, 0, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(16, 8, 0, 0),
                                 child: Text(
                                   'Statistics',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText2
-                                      .override(
+                                  style: FlutterFlowTheme.of(context).bodyText2.override(
                                         fontFamily: 'Lexend Deca',
                                         color: Color(0xFF8B97A2),
                                         fontSize: 14,
@@ -423,8 +401,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        4, 4, 0, 4),
+                                    padding: EdgeInsetsDirectional.fromSTEB(4, 4, 0, 4),
                                     child: Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       color: Colors.black,
@@ -436,45 +413,31 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8, 8, 8, 8),
+                                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Expanded(
                                                   child: Text(
                                                     'ARCs \nvisited',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyText2
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color:
-                                                              Color(0xFF8B97A2),
+                                                    style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                          fontFamily: 'Lexend Deca',
+                                                          color: Color(0xFF8B97A2),
                                                           fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                          fontWeight: FontWeight.w500,
                                                         ),
                                                   ),
                                                 ),
                                                 Card(
-                                                  clipBehavior: Clip
-                                                      .antiAliasWithSaveLayer,
+                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                                   color: Color(0x734B39EF),
                                                   child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                2, 2, 2, 2),
+                                                    padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                                                     child: Text(
                                                       '^ 25%',
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xFFC4BCFF),
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        color: Color(0xFFC4BCFF),
+                                                        fontWeight: FontWeight.w500,
                                                         fontSize: 10,
                                                       ),
                                                     ),
@@ -487,26 +450,17 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(8, 0, 0, 8),
+                                                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 8),
                                                 child: Text(
                                                   '₹${getJsonField(
-                                                    (mainContentGetStatisticsByMSOResponse
-                                                            ?.jsonBody ??
-                                                        ''),
+                                                    (mainContentGetStatisticsByMSOResponse?.jsonBody ?? ''),
                                                     r'''$.all_time.arcs_visited''',
                                                   ).toString()}',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title2
-                                                      .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color:
-                                                            Color(0xFF4B39EF),
+                                                  style: FlutterFlowTheme.of(context).title2.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Color(0xFF4B39EF),
                                                         fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        fontWeight: FontWeight.w500,
                                                       ),
                                                 ),
                                               ),
@@ -519,12 +473,10 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                 ),
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        2, 4, 4, 4),
+                                    padding: EdgeInsetsDirectional.fromSTEB(2, 4, 4, 4),
                                     child: Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
+                                      color: FlutterFlowTheme.of(context).alternate,
                                       elevation: 2,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
@@ -533,45 +485,31 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8, 8, 8, 8),
+                                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Expanded(
                                                   child: Text(
                                                     'Chemists \nvisited',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyText2
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color:
-                                                              Color(0xFFFFD7B6),
+                                                    style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                          fontFamily: 'Lexend Deca',
+                                                          color: Color(0xFFFFD7B6),
                                                           fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                          fontWeight: FontWeight.w500,
                                                         ),
                                                   ),
                                                 ),
                                                 Card(
-                                                  clipBehavior: Clip
-                                                      .antiAliasWithSaveLayer,
+                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                                   color: Color(0x68FFD7B6),
                                                   child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                2, 2, 2, 2),
+                                                    padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                                                     child: Text(
                                                       '^ 25%',
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xFFFFF2F2),
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        color: Color(0xFFFFF2F2),
+                                                        fontWeight: FontWeight.w500,
                                                         fontSize: 10,
                                                       ),
                                                     ),
@@ -584,31 +522,19 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(8, 0, 0, 8),
+                                                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 8),
                                                 child: Text(
                                                   '₹${getJsonField(
-                                                    (mainContentGetStatisticsByMSOResponse
-                                                            ?.jsonBody ??
-                                                        ''),
+                                                    (mainContentGetStatisticsByMSOResponse?.jsonBody ?? ''),
                                                     r'''$.all_time.chemists_visited''',
                                                   ).toString()}',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title2
-                                                      .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color:
-                                                            Color(0xFFFFD7B6),
+                                                  style: FlutterFlowTheme.of(context).title2.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Color(0xFFFFD7B6),
                                                         fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        fontWeight: FontWeight.w500,
                                                       ),
-                                                ).animated([
-                                                  animationsMap[
-                                                      'textOnPageLoadAnimation1']
-                                                ]),
+                                                ).animated([animationsMap['textOnPageLoadAnimation1']]),
                                               ),
                                             ],
                                           ),
@@ -627,12 +553,10 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        2, 4, 4, 4),
+                                    padding: EdgeInsetsDirectional.fromSTEB(2, 4, 4, 4),
                                     child: Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
+                                      color: FlutterFlowTheme.of(context).primaryColor,
                                       elevation: 2,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
@@ -641,45 +565,31 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8, 8, 8, 8),
+                                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Expanded(
                                                   child: Text(
                                                     'Incoming',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyText2
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color:
-                                                              Color(0xFFE9F1FF),
+                                                    style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                          fontFamily: 'Lexend Deca',
+                                                          color: Color(0xFFE9F1FF),
                                                           fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                          fontWeight: FontWeight.w500,
                                                         ),
                                                   ),
                                                 ),
                                                 Card(
-                                                  clipBehavior: Clip
-                                                      .antiAliasWithSaveLayer,
+                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                                   color: Color(0x5BB6D0FF),
                                                   child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                2, 2, 2, 2),
+                                                    padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                                                     child: Text(
                                                       '^ 25%',
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xFFE9F1FF),
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        color: Color(0xFFE9F1FF),
+                                                        fontWeight: FontWeight.w500,
                                                         fontSize: 10,
                                                       ),
                                                     ),
@@ -692,31 +602,19 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(8, 0, 0, 8),
+                                                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 8),
                                                 child: Text(
                                                   '₹${getJsonField(
-                                                    (mainContentGetStatisticsByMSOResponse
-                                                            ?.jsonBody ??
-                                                        ''),
+                                                    (mainContentGetStatisticsByMSOResponse?.jsonBody ?? ''),
                                                     r'''$.all_time.doctors_visited''',
                                                   ).toString()}',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title2
-                                                      .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color:
-                                                            Color(0xFFE9F1FF),
+                                                  style: FlutterFlowTheme.of(context).title2.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Color(0xFFE9F1FF),
                                                         fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        fontWeight: FontWeight.w500,
                                                       ),
-                                                ).animated([
-                                                  animationsMap[
-                                                      'textOnPageLoadAnimation2']
-                                                ]),
+                                                ).animated([animationsMap['textOnPageLoadAnimation2']]),
                                               ),
                                             ],
                                           ),
@@ -732,13 +630,10 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 8, 0, 12),
+                                padding: EdgeInsetsDirectional.fromSTEB(16, 8, 0, 12),
                                 child: Text(
                                   'Recent Activity',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText2
-                                      .override(
+                                  style: FlutterFlowTheme.of(context).bodyText2.override(
                                         fontFamily: 'Lexend Deca',
                                         color: Color(0xFF8B97A2),
                                         fontSize: 14,
@@ -763,33 +658,29 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                       width: 20,
                                       height: 20,
                                       child: CircularProgressIndicator(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryColor,
+                                        color: FlutterFlowTheme.of(context).primaryColor,
                                       ),
                                     ),
                                   );
                                 }
-                                final listViewSBLRsAsPairsIdResponse =
-                                    snapshot.data;
+                                final listViewSBLRsAsPairsIdResponse = snapshot.data;
                                 return Builder(
                                   builder: (context) {
                                     final msoPair = (getJsonField(
-                                              (listViewSBLRsAsPairsIdResponse
-                                                      ?.jsonBody ??
-                                                  ''),
+                                              (listViewSBLRsAsPairsIdResponse?.jsonBody ?? ''),
                                               r'''$''',
                                             )?.toList() ??
                                             [])
                                         .take(25)
                                         .toList();
                                     return ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
                                       itemCount: msoPair.length,
                                       itemBuilder: (context, msoPairIndex) {
-                                        final msoPairItem =
-                                            msoPair[msoPairIndex];
+                                        final msoPairItem = msoPair[msoPairIndex];
                                         return Container(
                                           decoration: BoxDecoration(),
                                           child: Column(
@@ -797,63 +688,37 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                             children: [
                                               Row(
                                                 mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.43,
+                                                    width: MediaQuery.of(context).size.width * 0.43,
                                                     height: 150,
                                                     decoration: BoxDecoration(
                                                       color: Color(0x00FFFFFF),
                                                     ),
                                                     child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 10, 0),
+                                                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                                                       child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
+                                                        mainAxisSize: MainAxisSize.max,
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        5),
+                                                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                                             child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.end,
                                                               children: [
                                                                 Text(
                                                                   'MSO',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .bodyText1
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
-                                                                        color: Color(
-                                                                            0xFFE1E1E1),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                        fontFamily: 'Poppins',
+                                                                        color: Color(0xFFE1E1E1),
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.normal,
                                                                       ),
                                                                 ),
                                                                 Text(
@@ -861,132 +726,64 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                                                     msoPairItem,
                                                                     r'''$[0].mso''',
                                                                   ).toString()}',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .bodyText1
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
+                                                                        fontFamily: 'Poppins',
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .secondaryColor,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.w600,
                                                                       ),
                                                                 ).animated([
-                                                                  animationsMap[
-                                                                      'textOnPageLoadAnimation3']
+                                                                  animationsMap['textOnPageLoadAnimation3']
                                                                 ]),
                                                               ],
                                                             ),
                                                           ),
                                                           Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
+                                                            mainAxisSize: MainAxisSize.max,
+                                                            mainAxisAlignment: MainAxisAlignment.end,
                                                             children: [
                                                               Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0,
-                                                                            0,
-                                                                            0,
-                                                                            5),
+                                                                padding: EdgeInsetsDirectional.fromSTEB(
+                                                                    0, 0, 0, 5),
                                                                 child: Text(
                                                                   getJsonField(
                                                                     msoPairItem,
                                                                     r'''$[0].date''',
                                                                   ).toString(),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .bodyText1
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
+                                                                        fontFamily: 'Poppins',
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .alternate,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.w600,
                                                                       ),
                                                                 ).animated([
-                                                                  animationsMap[
-                                                                      'textOnPageLoadAnimation4']
+                                                                  animationsMap['textOnPageLoadAnimation4']
                                                                 ]),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0,
-                                                                            0,
-                                                                            0,
-                                                                            5),
-                                                                child: Text(
-                                                                  'Booking',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
-                                                                        color: Color(
-                                                                            0xFFEFF5FF),
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      ),
-                                                                ),
                                                               ),
                                                             ],
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        5),
+                                                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                                             child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.end,
                                                               children: [
                                                                 Text(
                                                                   '₹',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .bodyText1
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                        fontFamily: 'Poppins',
+                                                                        color: Colors.white,
+                                                                        fontSize: 18,
+                                                                        fontWeight: FontWeight.normal,
                                                                       ),
                                                                 ),
                                                                 Text(
@@ -994,82 +791,88 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                                                     msoPairItem,
                                                                     r'''$[0].total_booking''',
                                                                   ).toString(),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .bodyText1
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
+                                                                        fontFamily: 'Poppins',
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .primaryColor,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.normal,
                                                                       ),
                                                                 ).animated([
-                                                                  animationsMap[
-                                                                      'textOnPageLoadAnimation5']
+                                                                  animationsMap['textOnPageLoadAnimation5']
                                                                 ]),
                                                               ],
                                                             ),
                                                           ),
                                                           Container(
                                                             width: 150,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Color(
-                                                                  0x00FFFFFF),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          50),
-                                                              border:
-                                                                  Border.all(
+                                                            decoration: BoxDecoration(
+                                                              color: Color(0x00FFFFFF),
+                                                              borderRadius: BorderRadius.circular(50),
+                                                              border: Border.all(
                                                                 width: 2,
                                                               ),
                                                             ),
                                                             child: ListTile(
                                                               title: Text(
                                                                 'Summary',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
+                                                                textAlign: TextAlign.end,
+                                                                style: FlutterFlowTheme.of(context)
                                                                     .title3
                                                                     .override(
-                                                                      fontFamily:
-                                                                          'Poppins',
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
+                                                                      fontFamily: 'Poppins',
+                                                                      color: Colors.white,
+                                                                      fontSize: 16,
+                                                                      fontWeight: FontWeight.normal,
                                                                     ),
                                                               ),
                                                               trailing: Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios,
-                                                                color: Colors
-                                                                    .white,
+                                                                Icons.arrow_forward_ios,
+                                                                color: Colors.white,
                                                                 size: 15,
                                                               ),
-                                                              tileColor:
-                                                                  Colors.black,
+                                                              tileColor: Colors.black,
                                                               dense: false,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(50),
                                                               ),
+                                                              onTap: () async {
+                                                                await showModalBottomSheet(
+                                                                  isScrollControlled: true,
+                                                                  backgroundColor: Colors.transparent,
+                                                                  context: context,
+                                                                  builder: (context) {
+                                                                    return Padding(
+                                                                      padding:
+                                                                          MediaQuery.of(context).viewInsets,
+                                                                      child: Container(
+                                                                        height: MediaQuery.of(context)
+                                                                                .size
+                                                                                .height *
+                                                                            0.8,
+                                                                        child: SummaryBottomSheetWidget(
+                                                                          data: getJsonField(
+                                                                            msoPairItem,
+                                                                            r'''$[1].summary''',
+                                                                          ).toString(),
+                                                                          date: getJsonField(
+                                                                            msoPairItem,
+                                                                            r'''$[1].date''',
+                                                                          ).toString(),
+                                                                          booking: getJsonField(
+                                                                            msoPairItem,
+                                                                            r'''$[1].total_booking''',
+                                                                          ).toString(),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
                                                             ).animated([
-                                                              animationsMap[
-                                                                  'listTileOnPageLoadAnimation1']
+                                                              animationsMap['listTileOnPageLoadAnimation1']
                                                             ]),
                                                           ),
                                                         ],
@@ -1077,48 +880,32 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                                     ),
                                                   ),
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.06,
+                                                    width: MediaQuery.of(context).size.width * 0.06,
                                                     decoration: BoxDecoration(),
                                                     child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisSize: MainAxisSize.max,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         Container(
                                                           width: 2,
                                                           height: 65,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
                                                           ),
                                                         ),
                                                         Container(
                                                           width: 20,
                                                           height: 20,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
+                                                            borderRadius: BorderRadius.circular(10),
                                                           ),
                                                         ),
                                                         Container(
                                                           width: 2,
                                                           height: 65,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
                                                           ),
                                                         ),
                                                       ],
@@ -1128,122 +915,75 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                               ),
                                               Row(
                                                 mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.06,
+                                                    width: MediaQuery.of(context).size.width * 0.06,
                                                     decoration: BoxDecoration(),
                                                     child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisSize: MainAxisSize.max,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         Container(
                                                           width: 2,
                                                           height: 65,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
                                                           ),
                                                         ),
                                                         Container(
                                                           width: 20,
                                                           height: 20,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
+                                                            borderRadius: BorderRadius.circular(10),
                                                           ),
                                                         ),
                                                         Container(
                                                           width: 2,
                                                           height: 65,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0x3DFFFFFF),
+                                                          decoration: BoxDecoration(
+                                                            color: Color(0x3DFFFFFF),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.43,
+                                                    width: MediaQuery.of(context).size.width * 0.43,
                                                     height: 150,
                                                     decoration: BoxDecoration(
                                                       color: Color(0x00FFFFFF),
                                                     ),
                                                     child: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.43,
+                                                      width: MediaQuery.of(context).size.width * 0.43,
                                                       height: 150,
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0x00FFFFFF),
+                                                        color: Color(0x00FFFFFF),
                                                       ),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(10, 0,
-                                                                    0, 0),
+                                                        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                                         child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          mainAxisSize: MainAxisSize.max,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          5),
+                                                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                                               child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
+                                                                mainAxisSize: MainAxisSize.max,
+                                                                mainAxisAlignment: MainAxisAlignment.start,
                                                                 children: [
                                                                   Text(
                                                                     'MSO',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
+                                                                    style: FlutterFlowTheme.of(context)
                                                                         .bodyText1
                                                                         .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              Color(0xFFE1E1E1),
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
+                                                                          fontFamily: 'Poppins',
+                                                                          color: Color(0xFFE1E1E1),
+                                                                          fontSize: 16,
+                                                                          fontWeight: FontWeight.normal,
                                                                         ),
                                                                   ),
                                                                   Text(
@@ -1251,130 +991,64 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                                                       msoPairItem,
                                                                       r'''$[1].mso''',
                                                                     ).toString()}',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
+                                                                    style: FlutterFlowTheme.of(context)
                                                                         .bodyText1
                                                                         .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryColor,
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
+                                                                          fontFamily: 'Poppins',
+                                                                          color: FlutterFlowTheme.of(context)
+                                                                              .secondaryColor,
+                                                                          fontSize: 16,
+                                                                          fontWeight: FontWeight.w600,
                                                                         ),
                                                                   ).animated([
-                                                                    animationsMap[
-                                                                        'textOnPageLoadAnimation6']
+                                                                    animationsMap['textOnPageLoadAnimation6']
                                                                   ]),
                                                                 ],
                                                               ),
                                                             ),
                                                             Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
                                                               children: [
                                                                 Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          5),
+                                                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      0, 0, 0, 5),
                                                                   child: Text(
                                                                     getJsonField(
                                                                       msoPairItem,
                                                                       r'''$[1].date''',
                                                                     ).toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
+                                                                    style: FlutterFlowTheme.of(context)
                                                                         .bodyText1
                                                                         .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).alternate,
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
+                                                                          fontFamily: 'Poppins',
+                                                                          color: FlutterFlowTheme.of(context)
+                                                                              .alternate,
+                                                                          fontSize: 16,
+                                                                          fontWeight: FontWeight.w600,
                                                                         ),
                                                                   ).animated([
-                                                                    animationsMap[
-                                                                        'textOnPageLoadAnimation7']
+                                                                    animationsMap['textOnPageLoadAnimation7']
                                                                   ]),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          5),
-                                                                  child: Text(
-                                                                    'Booking',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              Color(0xFFEFF5FF),
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                        ),
-                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          5),
+                                                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                                               child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
+                                                                mainAxisSize: MainAxisSize.max,
+                                                                mainAxisAlignment: MainAxisAlignment.start,
                                                                 children: [
                                                                   Text(
                                                                     '₹',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
+                                                                    style: FlutterFlowTheme.of(context)
                                                                         .bodyText1
                                                                         .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              Colors.white,
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
+                                                                          fontFamily: 'Poppins',
+                                                                          color: Colors.white,
+                                                                          fontSize: 18,
+                                                                          fontWeight: FontWeight.normal,
                                                                         ),
                                                                   ),
                                                                   Text(
@@ -1382,89 +1056,91 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget>
                                                                       msoPairItem,
                                                                       r'''$[1].total_booking''',
                                                                     ).toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
+                                                                    style: FlutterFlowTheme.of(context)
                                                                         .bodyText1
                                                                         .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryColor,
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
+                                                                          fontFamily: 'Poppins',
+                                                                          color: FlutterFlowTheme.of(context)
+                                                                              .primaryColor,
+                                                                          fontSize: 16,
+                                                                          fontWeight: FontWeight.normal,
                                                                         ),
                                                                   ).animated([
-                                                                    animationsMap[
-                                                                        'textOnPageLoadAnimation8']
+                                                                    animationsMap['textOnPageLoadAnimation8']
                                                                   ]),
                                                                 ],
                                                               ),
                                                             ),
                                                             Container(
                                                               width: 150,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Color(
-                                                                    0x00FFFFFF),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50),
-                                                                border:
-                                                                    Border.all(
+                                                              decoration: BoxDecoration(
+                                                                color: Color(0x00FFFFFF),
+                                                                borderRadius: BorderRadius.circular(50),
+                                                                border: Border.all(
                                                                   width: 2,
                                                                 ),
                                                               ),
                                                               child: ListTile(
                                                                 title: Text(
                                                                   'Summary',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                  textAlign: TextAlign.end,
+                                                                  style: FlutterFlowTheme.of(context)
                                                                       .title3
                                                                       .override(
-                                                                        fontFamily:
-                                                                            'Poppins',
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                        fontFamily: 'Poppins',
+                                                                        color: Colors.white,
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.normal,
                                                                       ),
                                                                 ),
                                                                 trailing: Icon(
-                                                                  Icons
-                                                                      .arrow_forward_ios,
-                                                                  color: Colors
-                                                                      .white,
+                                                                  Icons.arrow_forward_ios,
+                                                                  color: Colors.white,
                                                                   size: 15,
                                                                 ),
-                                                                tileColor:
-                                                                    Colors
-                                                                        .black,
+                                                                tileColor: Colors.black,
                                                                 dense: false,
                                                                 contentPadding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0,
-                                                                            0,
-                                                                            20,
-                                                                            0),
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50),
+                                                                    EdgeInsetsDirectional.fromSTEB(
+                                                                        0, 0, 20, 0),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(50),
                                                                 ),
+                                                                onTap: () async {
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled: true,
+                                                                    backgroundColor: Colors.transparent,
+                                                                    context: context,
+                                                                    builder: (context) {
+                                                                      return Padding(
+                                                                        padding:
+                                                                            MediaQuery.of(context).viewInsets,
+                                                                        child: Container(
+                                                                          height: MediaQuery.of(context)
+                                                                                  .size
+                                                                                  .height *
+                                                                              0.8,
+                                                                          child: SummaryBottomSheetWidget(
+                                                                            data: getJsonField(
+                                                                              msoPairItem,
+                                                                              r'''$[0].summary''',
+                                                                            ).toString(),
+                                                                            date: getJsonField(
+                                                                              msoPairItem,
+                                                                              r'''$[0].date''',
+                                                                            ).toString(),
+                                                                            booking: getJsonField(
+                                                                              msoPairItem,
+                                                                              r'''$[0].total_booking''',
+                                                                            ).toString(),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
                                                               ).animated([
-                                                                animationsMap[
-                                                                    'listTileOnPageLoadAnimation2']
+                                                                animationsMap['listTileOnPageLoadAnimation2']
                                                               ]),
                                                             ),
                                                           ],

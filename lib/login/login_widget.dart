@@ -1,3 +1,5 @@
+import 'package:vedanya_admin/main.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -92,8 +94,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             alignment: AlignmentDirectional(0, 0),
                             child: TextFormField(
                               onFieldSubmitted: (_) async {
-                                setState(() => FFAppState().username =
-                                    textController1.text);
+                                setState(() => FFAppState().username = textController1.text);
                               },
                               controller: textController1,
                               obscureText: false,
@@ -137,8 +138,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             alignment: AlignmentDirectional(0, 0),
                             child: TextFormField(
                               onFieldSubmitted: (_) async {
-                                setState(() => FFAppState().password =
-                                    textController2.text);
+                                setState(() => FFAppState().password = textController2.text);
                               },
                               controller: textController2,
                               obscureText: !passwordVisibility,
@@ -164,8 +164,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                                 suffixIcon: InkWell(
                                   onTap: () => setState(
-                                    () => passwordVisibility =
-                                        !passwordVisibility,
+                                    () => passwordVisibility = !passwordVisibility,
                                   ),
                                   child: Icon(
                                     passwordVisibility
@@ -192,12 +191,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                             passwd: textController2.text,
                           );
                           if (apiCallOutput.succeeded) {
+                            setState(() {
+                              FFAppState().username = textController1.text;
+                              FFAppState().password = textController2.text;
+                              FFAppState().isLoggedIn = true;
+                            });
                             await Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomePageWidget(
-                                  username: textController1.text,
-                                  password: textController2.text,
+                                builder: (context) => NavBarPage(
+                                  initialPage: 'HomePage',
                                 ),
                               ),
                               (r) => false,
