@@ -172,7 +172,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
@@ -191,37 +191,54 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     color: Color(0xFF090F13),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                        child: Text(
-                                          'Total Booking Today',
-                                          style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                fontFamily: 'Lexend Deca',
-                                                color: Color(0x98FFFFFF),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal,
+                                  child: FutureBuilder<ApiCallResponse>(
+                                      future: GetStatisticsCall.call(),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                color: FlutterFlowTheme.of(context).primaryColor,
                                               ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
-                                        child: Text(
-                                          '\$25,281',
-                                          style: FlutterFlowTheme.of(context).title1.override(
-                                                fontFamily: 'Lexend Deca',
-                                                color: Colors.white,
-                                                fontSize: 32,
-                                                fontWeight: FontWeight.bold,
+                                            ),
+                                          );
+                                        }
+                                        final columnGetStatisticsResponse = snapshot.data;
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                              child: Text(
+                                                'Total Booking Today',
+                                                style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Color(0x98FFFFFF),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.normal,
+                                                    ),
                                               ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
+                                              child: Text(
+                                                'INR ${getJsonField(columnGetStatisticsResponse?.jsonBody ?? '', r'''$.current_day.total_booking''').toString()}',
+                                                style: FlutterFlowTheme.of(context).title1.override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Colors.white,
+                                                      fontSize: 32,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }),
                                 ),
                               ),
                               Padding(
@@ -431,61 +448,86 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                          child: Text(
-                                            'Total Booking\n(this month)',
-                                            style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                  fontFamily: 'Lexend Deca',
-                                                  color: Color(0x98FFFFFF),
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.normal,
+                                    child: FutureBuilder<ApiCallResponse>(
+                                        future: GetStatisticsCall.call(),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child: CircularProgressIndicator(
+                                                  color: FlutterFlowTheme.of(context).primaryColor,
                                                 ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
-                                          child: Text(
-                                            '\$3,000',
-                                            style: FlutterFlowTheme.of(context).title1.override(
-                                                  fontFamily: 'Lexend Deca',
-                                                  color: Colors.white,
-                                                  fontSize: 32,
-                                                  fontWeight: FontWeight.bold,
+                                              ),
+                                            );
+                                          }
+                                          final columnGetStatisticsResponse = snapshot.data;
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                                child: Text(
+                                                  'Total Booking\n(this month)',
+                                                  style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Color(0x98FFFFFF),
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.normal,
+                                                      ),
                                                 ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
-                                          child: Text(
-                                            'Total Bookig\n(this week)',
-                                            style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                  fontFamily: 'Lexend Deca',
-                                                  color: Color(0x98FFFFFF),
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.normal,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
+                                                child: Text(
+                                                  'INR ' +
+                                                      getJsonField(
+                                                              columnGetStatisticsResponse?.jsonBody ?? '',
+                                                              r'''$current_month.total_booking''')
+                                                          .toString(),
+                                                  style: FlutterFlowTheme.of(context).title1.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Colors.white,
+                                                        fontSize: 32,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
                                                 ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
-                                          child: Text(
-                                            '\$2,502',
-                                            style: FlutterFlowTheme.of(context).title1.override(
-                                                  fontFamily: 'Lexend Deca',
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
+                                                child: Text(
+                                                  'Total Bookig\n(this week)',
+                                                  style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Color(0x98FFFFFF),
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.normal,
+                                                      ),
                                                 ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
+                                                child: Text(
+                                                  'INR ' +
+                                                      getJsonField(
+                                                              columnGetStatisticsResponse?.jsonBody ?? '',
+                                                              r'''$current_week.total_booking''')
+                                                          .toString(),
+                                                  style: FlutterFlowTheme.of(context).title1.override(
+                                                        fontFamily: 'Lexend Deca',
+                                                        color: Colors.white,
+                                                        fontSize: 24,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
                                   ),
                                 ),
                                 Padding(
@@ -657,7 +699,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           );
                         }
                         final objectGetMSObyIdResponse = snapshot.data;
-                        for (dynamic i in objectGetMSObyIdResponse.jsonBody)
+                        for (dynamic i in objectGetMSObyIdResponse.jsonBody ?? [])
                           msosSerialized[i['pk']] = i['name'];
                         return FutureBuilder<ApiCallResponse>(
                           future: GetRecentSBLRsCall.call(),

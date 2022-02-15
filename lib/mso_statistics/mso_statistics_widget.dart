@@ -20,7 +20,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
   String choiceChipsValue;
   String dropDownValue;
   Map<String, int> msosSerialized = {};
-  int msoStatId = 1;
+  int msoStatId = -1;
   String statisticValue = 'all_time';
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -305,7 +305,6 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                     for (dynamic mso in dropDownGetMSOSResponse.jsonBody)
                                       msosSerialized[mso['name']] = mso['pk'];
                                     return FlutterFlowDropDown(
-                                      initialOption: msosSerialized.keys.first,
                                       options: msosSerialized.keys.toList(),
                                       onChanged: (val) => setState(() {
                                         msoStatId = msosSerialized[val];
@@ -646,320 +645,57 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                 ),
                               ],
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.92,
-                              decoration: BoxDecoration(),
-                              child: FutureBuilder<ApiCallResponse>(
-                                future: SBLRsAsPairsIdCall.call(
-                                  id: msoStatId,
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context).primaryColor,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.width * 0.22),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.92,
+                                decoration: BoxDecoration(),
+                                child: FutureBuilder<ApiCallResponse>(
+                                  future: SBLRsAsPairsIdCall.call(
+                                    id: msoStatId,
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context).primaryColor,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }
-                                  final listViewSBLRsAsPairsIdResponse = snapshot.data;
-                                  return Builder(
-                                    builder: (context) {
-                                      final msoPair = (getJsonField(
-                                                (listViewSBLRsAsPairsIdResponse?.jsonBody ?? ''),
-                                                r'''$''',
-                                              )?.toList() ??
-                                              [])
-                                          .take(25)
-                                          .toList();
-                                      return ListView.builder(
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: msoPair.length,
-                                        itemBuilder: (context, msoPairIndex) {
-                                          final msoPairItem = msoPair[msoPairIndex];
-                                          return Container(
-                                            decoration: BoxDecoration(),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Row(
-                                                  mainAxisSize: MainAxisSize.max,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: MediaQuery.of(context).size.width * 0.43,
-                                                      height: 150,
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0x00FFFFFF),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.max,
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                                                              child: Row(
-                                                                mainAxisSize: MainAxisSize.max,
-                                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                                children: [
-                                                                  Text(
-                                                                    'MSO',
-                                                                    style: FlutterFlowTheme.of(context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily: 'Poppins',
-                                                                          color: Color(0xFFE1E1E1),
-                                                                          fontSize: 16,
-                                                                          fontWeight: FontWeight.normal,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    '#${getJsonField(
-                                                                      msoPairItem,
-                                                                      r'''$[0].mso''',
-                                                                    ).toString()}',
-                                                                    style: FlutterFlowTheme.of(context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily: 'Poppins',
-                                                                          color: FlutterFlowTheme.of(context)
-                                                                              .secondaryColor,
-                                                                          fontSize: 16,
-                                                                          fontWeight: FontWeight.w600,
-                                                                        ),
-                                                                  ).animated([
-                                                                    animationsMap['textOnPageLoadAnimation3']
-                                                                  ]),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              mainAxisSize: MainAxisSize.max,
-                                                              mainAxisAlignment: MainAxisAlignment.end,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                                                      0, 0, 0, 5),
-                                                                  child: Text(
-                                                                    getJsonField(
-                                                                      msoPairItem,
-                                                                      r'''$[0].date''',
-                                                                    ).toString(),
-                                                                    style: FlutterFlowTheme.of(context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily: 'Poppins',
-                                                                          color: FlutterFlowTheme.of(context)
-                                                                              .alternate,
-                                                                          fontSize: 16,
-                                                                          fontWeight: FontWeight.w600,
-                                                                        ),
-                                                                  ).animated([
-                                                                    animationsMap['textOnPageLoadAnimation4']
-                                                                  ]),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                                                              child: Row(
-                                                                mainAxisSize: MainAxisSize.max,
-                                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                                children: [
-                                                                  Text(
-                                                                    '₹',
-                                                                    style: FlutterFlowTheme.of(context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily: 'Poppins',
-                                                                          color: Colors.white,
-                                                                          fontSize: 18,
-                                                                          fontWeight: FontWeight.normal,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    getJsonField(
-                                                                      msoPairItem,
-                                                                      r'''$[0].total_booking''',
-                                                                    ).toString(),
-                                                                    style: FlutterFlowTheme.of(context)
-                                                                        .bodyText1
-                                                                        .override(
-                                                                          fontFamily: 'Poppins',
-                                                                          color: FlutterFlowTheme.of(context)
-                                                                              .primaryColor,
-                                                                          fontSize: 16,
-                                                                          fontWeight: FontWeight.normal,
-                                                                        ),
-                                                                  ).animated([
-                                                                    animationsMap['textOnPageLoadAnimation5']
-                                                                  ]),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              width: 150,
-                                                              decoration: BoxDecoration(
-                                                                color: Color(0xFF000000),
-                                                                borderRadius: BorderRadius.circular(50),
-                                                                border: Border.all(
-                                                                  width: 2,
-                                                                ),
-                                                              ),
-                                                              child: ListTile(
-                                                                title: Text(
-                                                                  'Summary',
-                                                                  textAlign: TextAlign.end,
-                                                                  style: FlutterFlowTheme.of(context)
-                                                                      .title3
-                                                                      .override(
-                                                                        fontFamily: 'Poppins',
-                                                                        color: Colors.white,
-                                                                        fontSize: 16,
-                                                                        fontWeight: FontWeight.normal,
-                                                                      ),
-                                                                ),
-                                                                trailing: Icon(
-                                                                  Icons.arrow_forward_ios,
-                                                                  color: Colors.white,
-                                                                  size: 15,
-                                                                ),
-                                                                tileColor: Colors.black,
-                                                                dense: false,
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(50),
-                                                                ),
-                                                                onTap: () async {
-                                                                  await showModalBottomSheet(
-                                                                    isScrollControlled: true,
-                                                                    backgroundColor: Colors.transparent,
-                                                                    context: context,
-                                                                    builder: (context) {
-                                                                      return Padding(
-                                                                        padding:
-                                                                            MediaQuery.of(context).viewInsets,
-                                                                        child: Container(
-                                                                          height: MediaQuery.of(context)
-                                                                                  .size
-                                                                                  .height *
-                                                                              0.8,
-                                                                          child: SummaryBottomSheetWidget(
-                                                                            data: getJsonField(
-                                                                              msoPairItem,
-                                                                              r'''$[1].summary''',
-                                                                            ).toString(),
-                                                                            date: getJsonField(
-                                                                              msoPairItem,
-                                                                              r'''$[1].date''',
-                                                                            ).toString(),
-                                                                            booking: getJsonField(
-                                                                              msoPairItem,
-                                                                              r'''$[1].total_booking''',
-                                                                            ).toString(),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                              ).animated([
-                                                                animationsMap['listTileOnPageLoadAnimation1']
-                                                              ]),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: MediaQuery.of(context).size.width * 0.06,
-                                                      decoration: BoxDecoration(),
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.max,
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Container(
-                                                            width: 2,
-                                                            height: 65,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 20,
-                                                            height: 20,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                              borderRadius: BorderRadius.circular(10),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 2,
-                                                            height: 65,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisSize: MainAxisSize.max,
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: MediaQuery.of(context).size.width * 0.06,
-                                                      decoration: BoxDecoration(),
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.max,
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Container(
-                                                            width: 2,
-                                                            height: 65,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 20,
-                                                            height: 20,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                              borderRadius: BorderRadius.circular(10),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 2,
-                                                            height: 65,
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0x3DFFFFFF),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: MediaQuery.of(context).size.width * 0.43,
-                                                      height: 150,
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0x00FFFFFF),
-                                                      ),
-                                                      child: Container(
+                                      );
+                                    }
+                                    final listViewSBLRsAsPairsIdResponse = snapshot.data;
+                                    return Builder(
+                                      builder: (context) {
+                                        final msoPair = (getJsonField(
+                                                  (listViewSBLRsAsPairsIdResponse?.jsonBody ?? ''),
+                                                  r'''$''',
+                                                )?.toList() ??
+                                                [])
+                                            .take(25)
+                                            .toList();
+                                        return ListView.builder(
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.zero,
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: msoPair.length,
+                                          itemBuilder: (context, msoPairIndex) {
+                                            final msoPairItem = msoPair[msoPairIndex];
+                                            return Container(
+                                              decoration: BoxDecoration(),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Row(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
                                                         width: MediaQuery.of(context).size.width * 0.43,
                                                         height: 150,
                                                         decoration: BoxDecoration(
@@ -967,17 +703,17 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                                              EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                                                           child: Column(
                                                             mainAxisSize: MainAxisSize.max,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
                                                             children: [
                                                               Padding(
                                                                 padding: EdgeInsetsDirectional.fromSTEB(
                                                                     0, 0, 0, 5),
                                                                 child: Row(
                                                                   mainAxisSize: MainAxisSize.max,
-                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
                                                                     Text(
                                                                       'MSO',
@@ -993,7 +729,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                     Text(
                                                                       '#${getJsonField(
                                                                         msoPairItem,
-                                                                        r'''$[1].mso''',
+                                                                        r'''$[0].mso''',
                                                                       ).toString()}',
                                                                       style: FlutterFlowTheme.of(context)
                                                                           .bodyText1
@@ -1007,14 +743,14 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                           ),
                                                                     ).animated([
                                                                       animationsMap[
-                                                                          'textOnPageLoadAnimation6']
+                                                                          'textOnPageLoadAnimation3']
                                                                     ]),
                                                                   ],
                                                                 ),
                                                               ),
                                                               Row(
                                                                 mainAxisSize: MainAxisSize.max,
-                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                mainAxisAlignment: MainAxisAlignment.end,
                                                                 children: [
                                                                   Padding(
                                                                     padding: EdgeInsetsDirectional.fromSTEB(
@@ -1022,7 +758,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                     child: Text(
                                                                       getJsonField(
                                                                         msoPairItem,
-                                                                        r'''$[1].date''',
+                                                                        r'''$[0].date''',
                                                                       ).toString(),
                                                                       style: FlutterFlowTheme.of(context)
                                                                           .bodyText1
@@ -1036,7 +772,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                           ),
                                                                     ).animated([
                                                                       animationsMap[
-                                                                          'textOnPageLoadAnimation7']
+                                                                          'textOnPageLoadAnimation4']
                                                                     ]),
                                                                   ),
                                                                 ],
@@ -1046,7 +782,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                     0, 0, 0, 5),
                                                                 child: Row(
                                                                   mainAxisSize: MainAxisSize.max,
-                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
                                                                     Text(
                                                                       '₹',
@@ -1062,7 +798,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                     Text(
                                                                       getJsonField(
                                                                         msoPairItem,
-                                                                        r'''$[1].total_booking''',
+                                                                        r'''$[0].total_booking''',
                                                                       ).toString(),
                                                                       style: FlutterFlowTheme.of(context)
                                                                           .bodyText1
@@ -1076,7 +812,7 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                           ),
                                                                     ).animated([
                                                                       animationsMap[
-                                                                          'textOnPageLoadAnimation8']
+                                                                          'textOnPageLoadAnimation5']
                                                                     ]),
                                                                   ],
                                                                 ),
@@ -1110,9 +846,6 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                   ),
                                                                   tileColor: Colors.black,
                                                                   dense: false,
-                                                                  contentPadding:
-                                                                      EdgeInsetsDirectional.fromSTEB(
-                                                                          0, 0, 20, 0),
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(50),
                                                                   ),
@@ -1133,15 +866,15 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                             child: SummaryBottomSheetWidget(
                                                                               data: getJsonField(
                                                                                 msoPairItem,
-                                                                                r'''$[0].summary''',
+                                                                                r'''$[1].summary''',
                                                                               ).toString(),
                                                                               date: getJsonField(
                                                                                 msoPairItem,
-                                                                                r'''$[0].date''',
+                                                                                r'''$[1].date''',
                                                                               ).toString(),
                                                                               booking: getJsonField(
                                                                                 msoPairItem,
-                                                                                r'''$[0].total_booking''',
+                                                                                r'''$[1].total_booking''',
                                                                               ).toString(),
                                                                             ),
                                                                           ),
@@ -1151,24 +884,333 @@ class _MSOStatisticsWidgetState extends State<MSOStatisticsWidget> with TickerPr
                                                                   },
                                                                 ).animated([
                                                                   animationsMap[
-                                                                      'listTileOnPageLoadAnimation2']
+                                                                      'listTileOnPageLoadAnimation1']
                                                                 ]),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width * 0.06,
+                                                        decoration: BoxDecoration(),
+                                                        child: Column(
+                                                          mainAxisSize: MainAxisSize.max,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Container(
+                                                              width: 2,
+                                                              height: 65,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(0x3DFFFFFF),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 20,
+                                                              height: 20,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(0x3DFFFFFF),
+                                                                borderRadius: BorderRadius.circular(10),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 2,
+                                                              height: 65,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(0x3DFFFFFF),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: getJsonField(
+                                                              msoPairItem,
+                                                              r'''$[1].date''',
+                                                            ) ==
+                                                            null
+                                                        ? []
+                                                        : [
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width * 0.06,
+                                                              decoration: BoxDecoration(),
+                                                              child: Column(
+                                                                mainAxisSize: MainAxisSize.max,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  Container(
+                                                                    width: 2,
+                                                                    height: 65,
+                                                                    decoration: BoxDecoration(
+                                                                      color: Color(0x3DFFFFFF),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                    decoration: BoxDecoration(
+                                                                      color: Color(0x3DFFFFFF),
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    width: 2,
+                                                                    height: 65,
+                                                                    decoration: BoxDecoration(
+                                                                      color: Color(0x3DFFFFFF),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width * 0.43,
+                                                              height: 150,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(0x00FFFFFF),
+                                                              ),
+                                                              child: Container(
+                                                                width:
+                                                                    MediaQuery.of(context).size.width * 0.43,
+                                                                height: 150,
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(0x00FFFFFF),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      10, 0, 0, 0),
+                                                                  child: Column(
+                                                                    mainAxisSize: MainAxisSize.max,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            EdgeInsetsDirectional.fromSTEB(
+                                                                                0, 0, 0, 5),
+                                                                        child: Row(
+                                                                          mainAxisSize: MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              'MSO',
+                                                                              style:
+                                                                                  FlutterFlowTheme.of(context)
+                                                                                      .bodyText1
+                                                                                      .override(
+                                                                                        fontFamily: 'Poppins',
+                                                                                        color:
+                                                                                            Color(0xFFE1E1E1),
+                                                                                        fontSize: 16,
+                                                                                        fontWeight:
+                                                                                            FontWeight.normal,
+                                                                                      ),
+                                                                            ),
+                                                                            Text(
+                                                                              '#${getJsonField(
+                                                                                msoPairItem,
+                                                                                r'''$[1].mso''',
+                                                                              ).toString()}',
+                                                                              style:
+                                                                                  FlutterFlowTheme.of(context)
+                                                                                      .bodyText1
+                                                                                      .override(
+                                                                                        fontFamily: 'Poppins',
+                                                                                        color: FlutterFlowTheme
+                                                                                                .of(context)
+                                                                                            .secondaryColor,
+                                                                                        fontSize: 16,
+                                                                                        fontWeight:
+                                                                                            FontWeight.w600,
+                                                                                      ),
+                                                                            ).animated([
+                                                                              animationsMap[
+                                                                                  'textOnPageLoadAnimation6']
+                                                                            ]),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisSize: MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional
+                                                                                .fromSTEB(0, 0, 0, 5),
+                                                                            child: Text(
+                                                                              getJsonField(
+                                                                                msoPairItem,
+                                                                                r'''$[1].date''',
+                                                                              ).toString(),
+                                                                              style:
+                                                                                  FlutterFlowTheme.of(context)
+                                                                                      .bodyText1
+                                                                                      .override(
+                                                                                        fontFamily: 'Poppins',
+                                                                                        color: FlutterFlowTheme
+                                                                                                .of(context)
+                                                                                            .alternate,
+                                                                                        fontSize: 16,
+                                                                                        fontWeight:
+                                                                                            FontWeight.w600,
+                                                                                      ),
+                                                                            ).animated([
+                                                                              animationsMap[
+                                                                                  'textOnPageLoadAnimation7']
+                                                                            ]),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Padding(
+                                                                        padding:
+                                                                            EdgeInsetsDirectional.fromSTEB(
+                                                                                0, 0, 0, 5),
+                                                                        child: Row(
+                                                                          mainAxisSize: MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              '₹',
+                                                                              style:
+                                                                                  FlutterFlowTheme.of(context)
+                                                                                      .bodyText1
+                                                                                      .override(
+                                                                                        fontFamily: 'Poppins',
+                                                                                        color: Colors.white,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight:
+                                                                                            FontWeight.normal,
+                                                                                      ),
+                                                                            ),
+                                                                            Text(
+                                                                              getJsonField(
+                                                                                msoPairItem,
+                                                                                r'''$[1].total_booking''',
+                                                                              ).toString(),
+                                                                              style:
+                                                                                  FlutterFlowTheme.of(context)
+                                                                                      .bodyText1
+                                                                                      .override(
+                                                                                        fontFamily: 'Poppins',
+                                                                                        color: FlutterFlowTheme
+                                                                                                .of(context)
+                                                                                            .primaryColor,
+                                                                                        fontSize: 16,
+                                                                                        fontWeight:
+                                                                                            FontWeight.normal,
+                                                                                      ),
+                                                                            ).animated([
+                                                                              animationsMap[
+                                                                                  'textOnPageLoadAnimation8']
+                                                                            ]),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        width: 150,
+                                                                        decoration: BoxDecoration(
+                                                                          color: Color(0xFF000000),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(50),
+                                                                          border: Border.all(
+                                                                            width: 2,
+                                                                          ),
+                                                                        ),
+                                                                        child: ListTile(
+                                                                          title: Text(
+                                                                            'Summary',
+                                                                            textAlign: TextAlign.end,
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context)
+                                                                                    .title3
+                                                                                    .override(
+                                                                                      fontFamily: 'Poppins',
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 16,
+                                                                                      fontWeight:
+                                                                                          FontWeight.normal,
+                                                                                    ),
+                                                                          ),
+                                                                          trailing: Icon(
+                                                                            Icons.arrow_forward_ios,
+                                                                            color: Colors.white,
+                                                                            size: 15,
+                                                                          ),
+                                                                          tileColor: Colors.black,
+                                                                          dense: false,
+                                                                          contentPadding:
+                                                                              EdgeInsetsDirectional.fromSTEB(
+                                                                                  0, 0, 20, 0),
+                                                                          shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(50),
+                                                                          ),
+                                                                          onTap: () async {
+                                                                            await showModalBottomSheet(
+                                                                              isScrollControlled: true,
+                                                                              backgroundColor:
+                                                                                  Colors.transparent,
+                                                                              context: context,
+                                                                              builder: (context) {
+                                                                                return Padding(
+                                                                                  padding:
+                                                                                      MediaQuery.of(context)
+                                                                                          .viewInsets,
+                                                                                  child: Container(
+                                                                                    height:
+                                                                                        MediaQuery.of(context)
+                                                                                                .size
+                                                                                                .height *
+                                                                                            0.8,
+                                                                                    child:
+                                                                                        SummaryBottomSheetWidget(
+                                                                                      data: getJsonField(
+                                                                                        msoPairItem,
+                                                                                        r'''$[0].summary''',
+                                                                                      ).toString(),
+                                                                                      date: getJsonField(
+                                                                                        msoPairItem,
+                                                                                        r'''$[0].date''',
+                                                                                      ).toString(),
+                                                                                      booking: getJsonField(
+                                                                                        msoPairItem,
+                                                                                        r'''$[0].total_booking''',
+                                                                                      ).toString(),
+                                                                                    ),
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        ).animated([
+                                                                          animationsMap[
+                                                                              'listTileOnPageLoadAnimation2']
+                                                                        ]),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ],

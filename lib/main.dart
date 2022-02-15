@@ -46,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (FFAppState().isLoggedIn == null) FFAppState().isLoggedIn = false;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Vedanya Admin',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: _locale,
       supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(brightness: Brightness.light),
+      theme: ThemeData(brightness: Brightness.dark),
       darkTheme: ThemeData(brightness: Brightness.dark),
       themeMode: _themeMode,
       home: FFAppState().isLoggedIn ? NavBarPage() : LoginWidget(),

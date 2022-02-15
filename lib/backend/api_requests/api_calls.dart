@@ -17,6 +17,7 @@ class LoginAuthCall {
       params: {
         'username': username,
         'passwd': passwd,
+        'format': 'json',
       },
       returnBody: true,
     );
@@ -52,6 +53,7 @@ class GetMSObyIdCall {
       headers: {},
       params: {
         'id': id,
+        'format': 'json',
       },
       returnBody: true,
     );
@@ -62,7 +64,7 @@ class GetMSOSCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getMSOS',
-      apiUrl: 'http://143.110.180.215/api/msos',
+      apiUrl: 'http://143.110.180.215/api/msos?format=json',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -93,10 +95,13 @@ class GetStatisticsCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getStatistics',
-      apiUrl: 'http://143.110.180.215/api/getStatistics?id=-1',
+      apiUrl: 'http://143.110.180.215/api/getStatistics',
       callType: ApiCallType.GET,
       headers: {},
-      params: {},
+      params: {
+        'id': -1,
+        'format': 'json',
+      },
       returnBody: true,
     );
   }
@@ -113,6 +118,7 @@ class GetStatisticsByMSOCall {
       headers: {},
       params: {
         'id': id,
+        'format': 'json',
       },
       returnBody: true,
     );
@@ -125,11 +131,12 @@ class SBLRsAsPairsIdCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'SBLRsAsPairsId',
-      apiUrl: 'http://143.110.180.215/api/sblrsaspairsid?',
+      apiUrl: 'http://143.110.180.215/api/sblrsaspairsid',
       callType: ApiCallType.GET,
       headers: {},
       params: {
         'id': id,
+        'format': 'json',
       },
       returnBody: true,
     );
