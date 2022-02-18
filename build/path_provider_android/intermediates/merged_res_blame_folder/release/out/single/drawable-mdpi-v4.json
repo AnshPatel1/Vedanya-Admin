@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/path_provider_android/intermediates/res/merged/release/drawable-mdpi-v4/notify_panel_notification_icon_bg.png",
+        "source": "/Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/res/drawable-mdpi-v4/notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/path_provider_android/intermediates/res/merged/release/drawable-mdpi-v4/notification_bg_normal_pressed.9.png",
+        "source": "/Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/res/drawable-mdpi-v4/notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/path_provider_android/intermediates/res/merged/release/drawable-mdpi-v4/notification_bg_normal.9.png",
+        "source": "/Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/res/drawable-mdpi-v4/notification_bg_normal.9.png"
+    },
+    {
+        "merged": "/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/path_provider_android/intermediates/res/merged/release/drawable-mdpi-v4/notification_bg_low_pressed.9.png",
+        "source": "/Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/res/drawable-mdpi-v4/notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/path_provider_android/intermediates/res/merged/release/drawable-mdpi-v4/notification_bg_low_normal.9.png",
+        "source": "/Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/res/drawable-mdpi-v4/notification_bg_low_normal.9.png"
+    }
+]

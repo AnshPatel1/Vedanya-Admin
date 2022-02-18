@@ -4,14 +4,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vedanya_admin/login/login_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vedanya_admin/mso_statistics/mso_statistics_widget.dart';
-import 'flutter_flow/flutter_flow_theme.dart';
-import 'flutter_flow/internationalization.dart';
+import 'flutter_quick/flutter_quick_theme.dart';
+import 'flutter_quick/internationalization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vedanya_admin/home_page/home_page_widget.dart';
 import 'package:vedanya_admin/activity_page/activity_page_widget.dart';
 import 'settings/settings_widget.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
-import 'flutter_flow/flutter_flow_util.dart';
+import 'flutter_quick/flutter_quick_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

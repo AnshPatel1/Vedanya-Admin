@@ -1,9 +1,9 @@
 import 'package:vedanya_admin/components/summary_bottom_sheet_widget.dart';
 
 import '../backend/api_requests/api_calls.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_quick/flutter_quick_icon_button.dart';
+import '../flutter_quick/flutter_quick_theme.dart';
+import '../flutter_quick/flutter_quick_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

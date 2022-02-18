@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'flutter_flow/lat_lng.dart';
+import 'flutter_quick/lat_lng.dart';
 
 class FFAppState {
   static final FFAppState _instance = FFAppState._internal();

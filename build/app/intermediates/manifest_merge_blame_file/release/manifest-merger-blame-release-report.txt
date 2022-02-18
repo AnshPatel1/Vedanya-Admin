@@ -1,0 +1,103 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.flutterflow.vedanyaadmin"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:4:4-65
+11-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:4:21-63
+12
+13    <application
+13-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:6:4-51:19
+14        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+14-->[androidx.core:core:1.1.0] /Users/anshpatel/.gradle/caches/transforms-2/files-2.1/21205f6c78fec7136ff4a5d6552da96b/core-1.1.0/AndroidManifest.xml:24:18-86
+15        android:icon="@mipmap/ic_launcher"
+15-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:9:9-43
+16        android:label="Vedanya Admin"
+16-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:7:9-38
+17        android:requestLegacyExternalStorage="true" >
+17-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:10:9-52
+18        <activity
+18-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:12:9-41:20
+19            android:name="com.flutterflow.vedanyaadmin.MainActivity"
+19-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:13:13-41
+20            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+20-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:17:13-163
+21            android:exported="true"
+21-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:14:13-36
+22            android:hardwareAccelerated="true"
+22-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:18:13-47
+23            android:launchMode="singleTop"
+23-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:15:13-43
+24            android:theme="@style/LaunchTheme"
+24-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:16:13-47
+25            android:windowSoftInputMode="adjustResize" >
+25-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:19:13-55
+26
+27            <!--
+28                 Specifies an Android theme to apply to this Activity as soon as
+29                 the Android process has started. This theme is visible to the user
+30                 while the Flutter UI initializes. After that, this theme continues
+31                 to determine the Window background behind the Flutter UI.
+32            -->
+33            <meta-data
+33-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:24:13-27:17
+34                android:name="io.flutter.embedding.android.NormalTheme"
+34-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:25:15-70
+35                android:resource="@style/NormalTheme" />
+35-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:26:15-52
+36            <!--
+37                 Displays an Android View that continues showing the launch screen
+38                 Drawable until Flutter paints its first frame, then this splash
+39                 screen fades out. A splash screen is useful to avoid any visual
+40                 gap between the end of Android's launch screen and the painting of
+41                 Flutter's first frame.
+42            -->
+43            <meta-data
+43-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:33:13-36:17
+44                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+44-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:34:15-79
+45                android:resource="@drawable/launch_background" />
+45-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:35:15-61
+46
+47            <intent-filter>
+47-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:37:13-40:29
+48                <action android:name="android.intent.action.MAIN" />
+48-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:38:17-68
+48-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:38:25-66
+49
+50                <category android:name="android.intent.category.LAUNCHER" />
+50-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:39:17-76
+50-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:39:27-74
+51            </intent-filter>
+52        </activity>
+53
+54        <!--
+55             Don't delete the meta-data below.
+56             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+57        -->
+58        <meta-data
+58-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:45:9-47:33
+59            android:name="flutterEmbedding"
+59-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:46:13-44
+60            android:value="2" />
+60-->/Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/android/app/src/main/AndroidManifest.xml:47:13-30
+61
+62        <activity
+62-->[:url_launcher] /Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/url_launcher/intermediates/library_manifest/release/AndroidManifest.xml:8:9-11:74
+63            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+63-->[:url_launcher] /Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/url_launcher/intermediates/library_manifest/release/AndroidManifest.xml:9:13-74
+64            android:exported="false"
+64-->[:url_launcher] /Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/url_launcher/intermediates/library_manifest/release/AndroidManifest.xml:10:13-37
+65            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+65-->[:url_launcher] /Users/anshpatel/Documents/Flutter Projects/Vedanya Admin/build/url_launcher/intermediates/library_manifest/release/AndroidManifest.xml:11:13-71
+66    </application>
+67
+68</manifest>
