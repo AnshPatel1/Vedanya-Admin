@@ -467,7 +467,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           return Column(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
                                             children: [
                                               Padding(
                                                 padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
@@ -492,7 +492,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   style: FlutterFlowTheme.of(context).title1.override(
                                                         fontFamily: 'Lexend Deca',
                                                         color: Colors.white,
-                                                        fontSize: 32,
+                                                        fontSize: 26,
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                 ),

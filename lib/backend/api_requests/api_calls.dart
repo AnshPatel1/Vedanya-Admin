@@ -4,6 +4,8 @@ import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
+String application_url = 'http://134.209.145.155/';
+
 class LoginAuthCall {
   static Future<ApiCallResponse> call({
     String username = '',
@@ -11,7 +13,7 @@ class LoginAuthCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'loginAuth',
-      apiUrl: 'http://143.110.180.215/api/app/login/admin',
+      apiUrl: application_url + 'api/app/login/admin',
       callType: ApiCallType.GET,
       headers: {},
       params: {
@@ -28,7 +30,7 @@ class GetRecentSBLRsCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getRecentSBLRs',
-      apiUrl: 'http://143.110.180.215/api/sblrs?format=json',
+      apiUrl: application_url + 'api/sblrs?format=json',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -48,7 +50,7 @@ class GetMSObyIdCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'getMSObyId',
-      apiUrl: 'http://143.110.180.215/api/msos/id',
+      apiUrl: application_url + 'api/msos/id',
       callType: ApiCallType.GET,
       headers: {},
       params: {
@@ -64,7 +66,7 @@ class GetMSOSCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getMSOS',
-      apiUrl: 'http://143.110.180.215/api/msos?format=json',
+      apiUrl: application_url + 'api/msos?format=json',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -82,7 +84,7 @@ class GetSBLRAsPairsCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getSBLRAsPairs',
-      apiUrl: 'http://143.110.180.215/api/sblrsaspairs?format=json',
+      apiUrl: application_url + 'api/sblrsaspairs?format=json',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -95,7 +97,7 @@ class GetStatisticsCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
       callName: 'getStatistics',
-      apiUrl: 'http://143.110.180.215/api/getStatistics',
+      apiUrl: application_url + 'api/getStatistics',
       callType: ApiCallType.GET,
       headers: {},
       params: {
@@ -113,7 +115,7 @@ class GetStatisticsByMSOCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'getStatisticsByMSO',
-      apiUrl: 'http://143.110.180.215/api/getStatistics',
+      apiUrl: application_url + 'api/getStatistics',
       callType: ApiCallType.GET,
       headers: {},
       params: {
@@ -131,7 +133,7 @@ class SBLRsAsPairsIdCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'SBLRsAsPairsId',
-      apiUrl: 'http://143.110.180.215/api/sblrsaspairsid',
+      apiUrl: application_url + 'api/sblrsaspairsid',
       callType: ApiCallType.GET,
       headers: {},
       params: {
